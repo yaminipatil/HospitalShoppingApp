@@ -1,0 +1,96 @@
+
+@model IEnumerable<HospitalShoppingApp.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Hospital Doctor List";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center text-primary mb-4">
+        Hospital Appointment Management System
+    </h1>
+
+    <h3 class="mb-3">Available Doctors</h3>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Doctor ID</th>
+                        <th>Doctor Name</th>
+                        <th>Specialization</th>
+                        <th>Experience</th>
+                        <th>Consultation Fee</th>
+                        <th>Service Charge</th>
+                        <th>Total Charge</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var doctor in Model)
+                    {
+                        <tr>
+                            <td>@doctor.DoctorId</td>
+                            <td>@doctor.DoctorName</td>
+                            <td>@doctor.Specialization</td>
+                            <td>@doctor.Experience years</td>
+                            <td>₹@doctor.ConsultationFee</td>
+                            <td>₹100</td>
+                            <td>
+                                <strong>
+                                    ₹@doctor.CalculateTotalCharge()
+                                </strong>
+                            </td>
+                            <td>
+                                <a asp-controller="Hospital"
+                                   asp-action="Details"
+                                   asp-route-id="@doctor.DoctorId"
+                                   class="btn btn-info btn-sm mb-1">
+                                    Details
+                                </a>
+
+                                <a asp-controller="Hospital"
+                                   asp-action="Appointment"
+                                   asp-route-id="@doctor.DoctorId"
+                                   class="btn btn-success btn-sm">
+                                    Book
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            No doctors are currently available.
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="Hospital"
+           asp-action="Posts"
+           class="btn btn-primary">
+            View External Posts
+        </a>
+
+        <a asp-controller="Product"
+           asp-action="Index"
+           class="btn btn-warning">
+            Online Shopping
+        </a>
+    </div>
+</div>
+
